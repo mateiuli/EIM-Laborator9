@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.doubango.ngn.NgnEngine;
+import org.doubango.ngn.events.NgnInviteEventArgs;
 import org.doubango.ngn.events.NgnRegistrationEventArgs;
 import org.doubango.ngn.media.NgnMediaType;
 import org.doubango.ngn.services.INgnConfigurationService;
@@ -109,7 +110,7 @@ public class VoiceCallActivity extends AppCompatActivity {
             // - if the call can be made, set the callStatusTextView to "calling" and log the information
             // - if the call cannot be made, log the information accordingly
             // hint: use the makeCall() method of the NgnAVSession instance
-            NgnAVSession.createOutgoingSession(
+            ngnAVSession = NgnAVSession.createOutgoingSession(
                     NgnEngine.getInstance().getSipService().getSipStack(),
                     NgnMediaType.Audio
             );
@@ -288,6 +289,10 @@ public class VoiceCallActivity extends AppCompatActivity {
         // - create a VoiceCallBroadcastReceiver instance
         // - create an IntentFilter instance for NgnInviteEventArgs.ACTION_INVITE_EVENT action
         // - register the broadcast receiver with the intent filter
+        voiceCallBroadcastReceiver = new VoiceCallBroadcastReceiver(SIPAddressEditText, callStatusTextView);
+        voiceCallIntentFilter = new IntentFilter();
+        voiceCallIntentFilter.addAction(NgnInviteEventArgs.ACTION_INVITE_EVENT);
+        registerReceiver(voiceCallBroadcastReceiver, voiceCallIntentFilter);
 
     }
 
@@ -295,7 +300,10 @@ public class VoiceCallActivity extends AppCompatActivity {
 
         // TODO exercise 8b
         // unregister the VoiceCallBroadcastReceiver instance
-
+        if (voiceCallBroadcastReceiver != null) {
+            unregisterReceiver(voiceCallBroadcastReceiver);
+            voiceCallBroadcastReceiver = null;
+        }
     }
 
     @Override

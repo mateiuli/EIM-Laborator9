@@ -14,7 +14,7 @@ public interface Constants {
     final public static String DOMAIN = "upbim.onsip.com";
     final public static String NETWORK_PCSCF_HOST = "sip.onsip.com";
     final public static int NETWORK_PCSCF_PORT = 5060;
-    final public static String NETWORK_REALM = " sip.onsip.com";
+    final public static String NETWORK_REALM = "upbim.onsip.com";
 
     final public static boolean NETWORK_USE_3G = true;
     final public static int NETWORK_REGISTRATION_TIMEOUT = 3600;
